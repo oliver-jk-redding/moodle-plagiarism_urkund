@@ -109,7 +109,7 @@ class plagiarism_plugin_urkund extends plagiarism_plugin {
      */
     public static function config_options($adminsettings = false) {
         $options = array('use_urkund', 'urkund_show_student_score', 'urkund_show_student_report',
-                     'urkund_draft_submit', 'urkund_receiver', 'urkund_studentemail', 'urkund_allowallfile',
+                     'urkund_draft_submit', 'urkund_resubmit_on_close', 'urkund_receiver', 'urkund_studentemail', 'urkund_allowallfile',
                      'urkund_selectfiletypes', 'urkund_restrictcontent');
         if ($adminsettings) {
             $options[] = 'urkund_advanceditems';
@@ -501,6 +501,7 @@ class plagiarism_plugin_urkund extends plagiarism_plugin {
         $mform->setType('urkund_show_student_score', PARAM_INT);
         $mform->setType('urkund_show_student_report', PARAM_INT);
         $mform->setType('urkund_draft_submit', PARAM_INT);
+        $mform->setType('urkund_resubmit_on_close', PARAM_INT);
         $mform->setType('urkund_receiver', PARAM_TEXT);
         $mform->setType('urkund_studentemail', PARAM_INT);
 
@@ -865,6 +866,8 @@ function urkund_get_form_elements($mform) {
         $mform->addElement('select', 'urkund_draft_submit',
                            get_string("urkund_draft_submit", "plagiarism_urkund"), $urkunddraftoptions);
     }
+    $mform->addElement('select', 'urkund_resubmit_on_close', get_string("urkund_resubmitonclose", "plagiarism_urkund"), $ynoptions);
+    $mform->addHelpButton('urkund_resubmit_on_close', 'urkund_resubmitonclose', 'plagiarism_urkund');
     $contentoptions = array(PLAGIARISM_URKUND_RESTRICTCONTENTNO => get_string('restrictcontentno', 'plagiarism_urkund'),
                             PLAGIARISM_URKUND_RESTRICTCONTENTFILES => get_string('restrictcontentfiles', 'plagiarism_urkund'),
                             PLAGIARISM_URKUND_RESTRICTCONTENTTEXT => get_string('restrictcontenttext', 'plagiarism_urkund'));
