@@ -1860,3 +1860,16 @@ function plagiarism_urkund_pretty_print($arr) {
     $retstr .= '</table>';
     return $retstr;
 }
+
+/**
+ * Function called by scheduled tasks. Resubmits work to URKUND upon closure of submission period.
+ *
+ */
+function plagiarism_urkund_resubmit_on_close() {
+    global $DB;
+
+    $plagiarismsettings = plagiarism_plugin_urkund::get_settings();
+    if (!empty($plagiarismsettings)) {
+        // $plagiarismvalues[$cmid] = $DB->get_records_menu('plagiarism_urkund_config', array('cm' => $cmid), '', 'name,value');
+    }
+}
