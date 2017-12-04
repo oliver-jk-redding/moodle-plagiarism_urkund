@@ -25,6 +25,7 @@
 
 $string['allowallsupportedfiles'] = 'Allow all supported file types';
 $string['allowallsupportedfiles_help'] = 'This allows the teacher to restrict which file types will be sent to URKUND for processing. It does not prevent students from uploading different file types to the assignment.';
+$string['assignmentresubmitted'] = 'Assignment resubmitted';
 $string['attempts'] = 'Attempts made';
 $string['confirmresetall'] = 'This will reset all files in the state: {$a}';
 $string['cronwarning'] = 'The <a href="../../admin/cron.php">cron.php</a> maintenance script has not been run for at least 30 min - Cron must be configured to allow URKUND to function correctly.';

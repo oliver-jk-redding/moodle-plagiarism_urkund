@@ -1867,9 +1867,25 @@ function plagiarism_urkund_pretty_print($arr) {
  */
 function plagiarism_urkund_resubmit_on_close() {
     global $DB;
+    // Get all assignments, forums and workshops
+    // For each assignment:
+        // Check if due date is passed
+        // Check if urkund is enabled
+        // Check if assignment has been resubmitted already
+        // Get all submissions
+        // Send all submissions to URKUND
+    // For each workshop:
+        // Check if submission end date is passed
+        // Check if urkund is enabled
+        // Check if workshop has been resubmitted already
+        // Get all submissions
+        // Send all submissions to URKUND
+    // For each forum (at this stage make forums exempt):
+        // Check if urkund is enabled
+        // Get all submissions
+            // Check if more than 30 mins has passed since a submission
+            // Check if submission has been resubmitted already
+            // Send all submission to URKUND
 
-    $plagiarismsettings = plagiarism_plugin_urkund::get_settings();
-    if (!empty($plagiarismsettings)) {
-        // $plagiarismvalues[$cmid] = $DB->get_records_menu('plagiarism_urkund_config', array('cm' => $cmid), '', 'name,value');
-    }
+
 }
