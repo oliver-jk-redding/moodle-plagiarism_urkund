@@ -1868,6 +1868,9 @@ function plagiarism_urkund_pretty_print($arr) {
 function plagiarism_urkund_resubmit_on_close() {
     global $DB;
     // Get all assignments, forums and workshops
+    // $sql = 'cm = ? AND userid IN (' . implode(',', $userids) . ')';
+    // $assignments = $DB->get_records_select('assign', $sql,
+    //     array($plagiarismfile->cm), 'id');
     // For each assignment:
         // Check if due date is passed
         // Check if urkund is enabled
