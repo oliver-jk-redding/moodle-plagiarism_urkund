@@ -1867,16 +1867,31 @@ function plagiarism_urkund_pretty_print($arr) {
  */
 function plagiarism_urkund_resubmit_on_close() {
     global $DB;
-    // Get all plagiarism files
-    // For each plagiarism file
-        // Check if has been resubmitted
-        // If no, get course module by id
-        // Check if cm submission deadline has passed
-        // If yes, queue file to urkund
-    // Send queue to urkund
-    // For each file sent
-        // Add resubmission time to timeresubmitted column
-        // Trigger resubmitted event
+
+    // Get all Assignments with expired duedate
+    $now = time();
+    $select = "duedate > 1 AND duedate < $now";
+    $assignments = $DB->get_records_select('assign', $select);
+    // For each Assignment
+    foreach($assignments as $assignment) {
+        $id = $assignment->id;
+        $course = $assignment->course;
+        $duedate = $assignment->duedate;
+        $cm = get_coursemodule_from_instance('assign', $id, $course);
+        print_r($cm);
+    }
+        // Get config values
+        // Search config values for cmid match
+        // If match, get timestamp of row in config
+        // If timestamp of resubmission is older than deadline or there is no match, then...
+        // Get all plagiarism files that match cmid
+        // Send files to queue
+        // Fire send to urkund
+        // Add event log
+        // Update resubmitted timestamp in config
+
+    // Do same for workshops
+
 
 
 }
