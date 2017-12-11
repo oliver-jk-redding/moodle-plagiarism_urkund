@@ -1867,28 +1867,16 @@ function plagiarism_urkund_pretty_print($arr) {
  */
 function plagiarism_urkund_resubmit_on_close() {
     global $DB;
-    // Get all assignments, forums and workshops
-    // $sql = 'cm = ? AND userid IN (' . implode(',', $userids) . ')';
-    // $assignments = $DB->get_records_select('assign', $sql,
-    //     array($plagiarismfile->cm), 'id');
-    // For each assignment:
-        // Check if due date is passed
-        // Check if urkund is enabled
-        // Check if assignment has been resubmitted already
-        // Get all submissions
-        // Send all submissions to URKUND
-    // For each workshop:
-        // Check if submission end date is passed
-        // Check if urkund is enabled
-        // Check if workshop has been resubmitted already
-        // Get all submissions
-        // Send all submissions to URKUND
-    // For each forum (at this stage make forums exempt):
-        // Check if urkund is enabled
-        // Get all submissions
-            // Check if more than 30 mins has passed since a submission
-            // Check if submission has been resubmitted already
-            // Send all submission to URKUND
+    // Get all plagiarism files
+    // For each plagiarism file
+        // Check if has been resubmitted
+        // If no, get course module by id
+        // Check if cm submission deadline has passed
+        // If yes, queue file to urkund
+    // Send queue to urkund
+    // For each file sent
+        // Add resubmission time to timeresubmitted column
+        // Trigger resubmitted event
 
 
 }

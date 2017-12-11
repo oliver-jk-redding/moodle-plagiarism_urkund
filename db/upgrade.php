@@ -193,18 +193,13 @@ function xmldb_plagiarism_urkund_upgrade($oldversion) {
     }
 
     if ($oldversion < 2017120403) {
-        // Check to see if this has already been completed.
-
         // Define field timeresubmitted to be added to plagiarism_urkund_files.
         $table = new xmldb_table('plagiarism_urkund_files');
         $field = new xmldb_field('timeresubmitted', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED);
 
-        // Conditionally launch add field relateduserid.
+        // Conditionally add field timeresubmitted.
         if (!$dbman->field_exists($table, $field)) {
-            echo 'no timeresubmitted column';
             $dbman->add_field($table, $field);
-        } else {
-            echo 'there is already a timeresubmitted column';
         }
 
         // Urkund savepoint reached.
