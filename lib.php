@@ -1869,23 +1869,64 @@ function plagiarism_urkund_resubmit_on_close() {
     global $DB;
 
     // Get all Assignments with expired duedate
+    $modtype = 'assign';
     $now = time();
     $select = "duedate > 1 AND duedate < $now";
-    $assignments = $DB->get_records_select('assign', $select);
+    $assignments = $DB->get_records_select($modtype,$select);
     // For each Assignment
     foreach($assignments as $assignment) {
         $id = $assignment->id;
         $course = $assignment->course;
         $duedate = $assignment->duedate;
-        $cm = get_coursemodule_from_instance('assign', $id, $course);
-        print_r($cm);
+
+        // Check if course module exists. If not, continue to next module.
+        if(!$cm = get_coursemodule_from_instance($modtype, $id, $course)) {
+            print_error('modulenotfound', 'plagiarism_urkund', '', array('module'=>$modtype, 'modid'=>$id));
+            continue;
+        }
+        $cmid = $cm->id;
+
+        // Get plagiarism settings for module
+        $plagiarismvalues = $DB->get_records_menu('plagiarism_urkund_config', array('cm' => $cmid), '', 'name, value');
+
+        // Check if urkund and the resubmit_on_close option is enabled for this module. If not, continue to next module.
+        if (empty($plagiarismvalues['use_urkund']) or empty($plagiarismvalues['urkund_resubmit_on_close'])) {
+            continue;
+        }
+
+        if (!empty($plagiarismvalues['urkund_timeresubmitted'])) {
+            $timeresubmitted = $plagiarismvalues['urkund_timeresubmitted'];
+            $resubmitted_since_duedate = $timeresubmitted > $duedate;
+        }
+
+        // Check if module has already been resubmitted since the deadline. If yes, continue to next module.
+        if(isset($timeresubmitted) and $resubmitted_since_duedate) {
+            continue;
+        }
+
+        // Get all plagiarism files that match cmid and that have not exceeded their max attempts and are not already in the queue
+        $select = 'cm = ? AND attempt <= ? AND statuscode <> ? ';
+        $plagiarism_files = $DB->get_recordset_select('plagiarism_urkund_files', $select, array($cmid, PLAGIARISM_URKUND_MAXATTEMPTS, URKUND_STATUSCODE_PENDING));
+
+        // Change the status of the plagiarism files to pending so that they get resent during the next cron run
+        try {
+            $transaction = $DB->start_delegated_transaction();
+            foreach($plagiarism_files as $plagiarism_file) {
+                $plagiarism_file->statuscode = URKUND_STATUSCODE_PENDING;
+                $DB->update_record('plagiarism_urkund_files', $plagiarism_file);
+                print_r($plagiarism_file);
+            }
+            $transaction->allow_commit();
+        } catch(Exception $e) {
+            $transaction->rollback($e);
+        }
+
+        $plagiarism_files->close();
+
+
     }
-        // Get config values
-        // Search config values for cmid match
-        // If match, get timestamp of row in config
-        // If timestamp of resubmission is older than deadline or there is no match, then...
-        // Get all plagiarism files that match cmid
-        // Send files to queue
+
+
         // Fire send to urkund
         // Add event log
         // Update resubmitted timestamp in config

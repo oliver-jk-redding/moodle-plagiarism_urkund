@@ -50,6 +50,7 @@ $string['heldeventsdescription'] = 'These are events that did not complete on th
 $string['id'] = 'ID';
 $string['identifier'] = 'Identifier';
 $string['module'] = 'Module';
+$string['modulenotfound'] = 'Could not find module for {$a->module} with id {$a->modid}.';
 $string['name'] = 'Name';
 $string['nofilter'] = 'No filter';
 $string['noreceiver'] = 'No receiver address was specified';
